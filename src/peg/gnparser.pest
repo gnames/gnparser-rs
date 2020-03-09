@@ -1,0 +1,119 @@
+SciName = { SOI ~ Name ~ Tail ~ EOI }
+
+Name = _{ SingleName }
+
+Tail = { ((Sp | ";" | ",") ~ ANY*)? }
+
+SingleName = { NameUninomial }
+
+NameUninomial = _{ Uninomial }
+
+Uninomial = { UninomialWord ~ (Sp ~ Authorship)? }
+
+UninomialWord = { CapWord | TwoLetterGenus }
+
+CapWord = _{ CapWordWithDash | CapWord1 }
+
+CapWordWithDash = _{ CapWord1 ~ Dash ~ ( UpperAfterDash | LowerAfterDash) }
+
+UpperAfterDash = _{ CapWord1 }
+
+LowerAfterDash = _{ Word1 }
+
+TwoLetterGenus = _{ "Ca" | "Ea" | "Ge" | "Ia" | "Io" | "Ix" | "Lo" | "Oa" |
+  "Ra" | "Ty" | "Ua" | "Aa" | "Ja" | "Zu" | "La" | "Qu" | "As" | "Ba" }
+
+Word1 = _{ (ASCII_ALPHA_LOWER ~ Dash)? ~ NameLowerChar ~ NameLowerChar+ }
+
+CapWord1 = _{ NameUpperChar ~ NameLowerChar ~ NameLowerChar+ ~ "?"? }
+
+NameUpperChar = _{ UpperChar | UpperCharExtended }
+
+NameLowerChar = _{ LowerChar | LowerCharExtended | MiscodedChar }
+
+Dash = _{ "-" }
+
+Authorship = { (AuthorshipCombo | OriginalAuthorship) ~ &(SpaceCharEOI | ";" | ",") }
+
+AuthorshipCombo = { OriginalAuthorshipComb ~ (Sp? ~ CombinationAuthorship)? }
+
+OriginalAuthorship = { AuthorsGroup }
+
+OriginalAuthorshipComb = { BasyonymAuthorship }
+
+CombinationAuthorship = { AuthorsGroup }
+
+BasyonymAuthorship = { BasyonymAuthorship1 }
+
+BasyonymAuthorship1 = _{ "(" ~ Sp? ~ AuthorsGroup ~ Sp? ~ ")" }
+
+AuthorsGroup = { AuthorsTeam }
+
+AuthorsTeam = { Author ~ (AuthorSep ~ Author)* ~ (Sp? ~ ","? ~ Sp? ~ Year)? }
+
+AuthorSep = _{ AuthorSep1 | AuthorSep2 }
+
+AuthorSep1 = _{ Sp? ~ ("," ~ Sp)? ~ ( "&" | "et" | "and" | "apud") ~ Sp? }
+
+AuthorSep2 = _{ Sp? ~ "," ~ Sp? }
+
+Author = { Author2 }
+
+Author2 = _{ AuthorWord ~ (Sp? ~ AuthorWord)* }
+
+AuthorWord = { CapAuthorWord ~ "."? }
+
+CapAuthorWord = _{ AuthorUpperChar ~ AuthorLowerChar* }
+
+AuthorUpperChar = _{UpperChar | MiscodedChar |
+  ("À" | "Á" | "Â" | "Ã" | "Ä" | "Å" |"Æ" |"Ç" |"È" |"É" |"Ê" |"Ë" |"Ì" |"Í" |"Î" |"Ï" |"Ð" |"Ñ" |"Ò" |"Ó" |"Ô" |"Õ" |"Ö" |"Ø" |"Ù" |"Ú" |"Û" |"Ü" |"Ý" |"Ć" |"Č" |"Ď" |"İ" |"Ķ" |"Ĺ" |"ĺ" |"Ľ" |"ľ" |"Ł" |"ł" |"Ņ" |"Ō" |"Ő" |"Œ" |"Ř" |"Ś" |"Ŝ" |"Ş" |"Š" |"Ÿ" |"Ź" |"Ż" |"Ž" |"ƒ" |"Ǿ" |"Ș" |"Ț") }
+
+AuthorLowerChar = _{LowerChar | MiscodedChar |
+  ("à" |"á" |"â" |"ã" |"ä" |"å" |"æ" |"ç" |"è" |"é" |"ê" |"ë" |"ì" |"í" |
+   "î" |"ï" |"ð" |"ñ" |"ò" |"ó" |"ó" |"ô" |"õ" |"ö" |"ø" |"ù" |"ú" |"û" |
+   "ü" |"ý" |"ÿ" |"ā" |"ă" |"ą" |"ć" |"ĉ" |"č" |"ď" |"đ" |"'" |"ē" |"ĕ" |
+   "ė" |"ę" |"ě" |"ğ" |"ī" |"ĭ" |"İ" |"ı" |"ĺ" |"ľ" |"ł" |"ń" |"ņ" |"ň" |
+   "ŏ" |"ő" |"œ" |"ŕ" |"ř" |"ś" |"ş" |"š" |"ţ" |"ť" |"ũ" |"ū" |"ŭ" |"ů" |
+   "ű" |"ź" |"ż" |"ž" |"ſ" |"ǎ" |"ǔ" |"ǧ" |"ș" |"ț" |"ȳ" |"ß") }
+
+Year = { YearRange | YearApprox | YearWithParens | YearWithPage | YearWithDot |
+  YearWithChar | YearNum }
+
+YearRange = { YearNum ~ Dash ~ (ASCII_DIGIT+ ~ ("a" | "b" | "c" | "d" |
+      "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" |
+      "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "?")*) }
+
+YearWithDot =  { YearNum ~ "." }
+
+YearApprox  = { "[" ~ Sp? ~ YearNum ~ Sp? ~ "]" }
+
+YearWithPage = { (YearWithChar | YearNum) ~ Sp? ~ ":" ~ "?" ~ ASCII_DIGIT+ }
+
+YearWithParens = { "(" ~ (YearWithChar | YearNum) ~ ")" }
+
+YearWithChar = { YearNum ~ LowerChar }
+
+YearNum = { ("1" | "2") ~ ("0" | "7" | "8" | "9") ~ ASCII_DIGIT ~ (ASCII_DIGIT | "?") ~ "?"* }
+
+MiscodedChar = _{ "�" }
+
+UpperCharExtended = _{ "Æ" | "Œ" | "Ö" }
+
+UpperChar = _{ ASCII_ALPHA_UPPER }
+
+LowerCharExtended = _{ "æ" | "œ" | "à" | "â" | "å" | "ã" | "ä" | "á" | "ç" |
+                         "č" | "é" | "è" | "ë" | "í" | "ì" | "ï" | "ň" | "ñ" |
+                         "ñ" | "ó" | "ò" | "ô" | "ø" | "õ" | "ö" | "ú" | "ù" |
+                         "ü" | "ŕ" | "ř" | "ŗ" | "ſ" | "š" | "š" | "ş" | "ž" }
+
+LowerChar = _{ ASCII_ALPHA_LOWER }
+
+SpaceCharEOI = _{ Sp | EOI }
+
+Sp = _{ MultipleSpace | SingleSpace }
+
+MultipleSpace = _{ SingleSpace ~ SingleSpace+ }
+
+SingleSpace = _{ " " | OtherSpace }
+
+OtherSpace = _{ "　" | " " | "\t" | "\r" | "\n" } //| "\f" | "\v" }
