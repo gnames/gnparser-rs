@@ -1,0 +1,12 @@
+name: gnparser
+version: 0.1.0
+about: Parse scientific names into their elmeents
+args:
+    - INPUT:
+        help: Sets a name-string or file to use
+        required: true
+        index: 1
+    - format:
+        short: f
+        multiple: true
+        help: Sets the output format
