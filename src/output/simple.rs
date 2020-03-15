@@ -7,10 +7,10 @@ pub fn header() -> String {
 }
 
 pub fn row(sn: peg::SciName) -> Result<String, Box<dyn Error>> {
-    let mut can_full = "".to_string();
-    let mut can_simple = "".to_string();
-    let mut can_stem = "".to_string();
-    let mut year = "".to_string();
+    let mut can_full = String::new();
+    let mut can_simple = String::new();
+    let mut can_stem = String::new();
+    let mut year = String::new();
     if sn.canonical_name.is_some() {
         let can = sn.canonical_name.unwrap();
         can_full = can.full;
@@ -18,7 +18,7 @@ pub fn row(sn: peg::SciName) -> Result<String, Box<dyn Error>> {
         can_stem = can.stem;
     }
     if sn.year.is_some() {
-        year = sn.year.unwrap().to_string();
+        year = sn.year.unwrap();
     }
 
     let mut wtr = csv::Writer::from_writer(vec![]);

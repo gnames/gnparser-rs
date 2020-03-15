@@ -15,13 +15,14 @@ fn gnparser_parses_data() {
     let mut gnp = GNParser::new();
     gnp.is_test = true;
     for d in &data {
-        let mut parsed = gnp.parse_and_format(&d.verbatim);
-        assert_eq!(parsed, d.json);
+        let mut parsed = ParseEngine::parsed_name(&d.verbatim);
+        assert_eq!(parsed, d.raw);
         gnp.format = Format::Simple;
         parsed = gnp.parse_and_format(&d.verbatim);
         assert_eq!(parsed.trim(), d.csv);
-        parsed = ParseEngine::parsed_name(&d.verbatim);
-        assert_eq!(parsed, d.raw);
+        gnp.format = Format::Compact;
+        parsed = gnp.parse_and_format(&d.verbatim);
+        assert_eq!(parsed, d.json);
     }
 }
 

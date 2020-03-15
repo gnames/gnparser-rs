@@ -32,8 +32,6 @@ Pseudocercospora
 9c1167ca-79e7-53de-b4c3-fcdb68410527,Pseudocercospora,Pseudocercospora,Pseudocercospora,Pseudocercospora,,,1
 #>
 
-__END__
-
 #SECTION: Uninomial with authorship<
 Pseudocercospora Speg.
 Pseudocercospora Speg.
@@ -44,6 +42,8 @@ Döringina Ihering 1929 (synonym)
 Döringina Ihering 1929
 {"parsed":true,"quality":3,"qualityWarnings":[[3,"Unparsed tail"],[2,"Non-standard characters in canonical"]],"verbatim":"Döringina Ihering 1929 (synonym)","normalized":"Doeringina Ihering 1929","canonicalName":{"full":"Doeringina","simple":"Doeringina","stem":"Doeringina"},"authorship":"Ihering 1929","details":[{"uninomial":{"value":"Doeringina","authorship":{"value":"Ihering 1929","basionymAuthorship":{"authors":["Ihering"],"year":{"value":"1929"}}}}}],"positions":[["uninomial",0,9],["authorWord",10,17],["year",18,22]],"surrogate":false,"virus":false,"hybrid":false,"bacteria":false,"unparsedTail":" (synonym)","nameStringId":"95eb9081-5fe5-5497-be3d-ef0ce65a472c","parserVersion":"test_version"}
 95eb9081-5fe5-5497-be3d-ef0ce65a472c,Döringina Ihering 1929 (synonym),Doeringina,Doeringina,Doeringina,Ihering 1929,1929,3
+
+__END__
 
 Pseudocercospora Speg., Francis Jack.-Drake.
 Pseudocercospora Speg., Francis Jack.-Drake.

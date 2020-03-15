@@ -14,7 +14,6 @@ fn main() {
         if let Some(format) = matches.value_of("format").map(|f| Format::from(f)) {
             gnp.format = format;
         }
-        println!("{:?}", gnp);
         println!("{}", gnp.parse_and_format(input));
     } else {
         println!("NO INPUT");

@@ -16,9 +16,17 @@ impl ParseEngine {
     pub fn parsed_name(name: &str) -> String {
         let parsed = ParseEngine::ast(name);
         match parsed {
-            Some(pair) => pair.as_str().to_string(),
-            None => "noparse".to_string(),
+            Some(pair) => {
+                for p in pair.into_inner() {
+                    match p.as_rule() {
+                        Rule::SingleName => return p.as_str().to_string(),
+                        _ => continue,
+                    }
+                }
+            }
+            None => return "noparse".to_string(),
         }
+        "noparse".to_string()
     }
 }
 

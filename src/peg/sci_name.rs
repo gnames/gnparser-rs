@@ -1,12 +1,18 @@
 use serde::Serialize;
 
+/// NameAuthors trait finds the name authorship string and year if they
+/// exist
+pub trait NameAuthors {
+    fn last_authorship(&self) -> Option<(String, Option<String>)>;
+}
+
 #[derive(Serialize, Debug, Clone, Default)]
 #[serde(rename_all = "camelCase")]
 pub struct SciName {
     pub parsed: bool,
     pub quality: i8,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub warnings: Option<Vec<Warning>>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub quality_warnings: Vec<Warning>,
     pub verbatim: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub normalized: Option<String>,
@@ -15,7 +21,7 @@ pub struct SciName {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub authorship: Option<String>,
     #[serde(skip_serializing)]
-    pub year: Option<i16>,
+    pub year: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub details: Option<Vec<Details>>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -25,13 +31,13 @@ pub struct SciName {
     pub hybrid: bool,
     pub bacteria: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub tail: Option<String>,
+    pub unparsed_tail: Option<String>,
     pub name_string_id: String,
     pub parser_version: String,
 }
 
 #[derive(Serialize, Debug, Clone, Default)]
-pub struct Warning(pub i8, pub String);
+pub struct Warning(pub i8, pub &'static str);
 
 #[derive(Serialize, Debug, Clone, Default)]
 pub struct Canonical {
@@ -56,20 +62,36 @@ pub struct Uninomial {
     pub authorship: Option<Authorship>,
 }
 
-#[derive(Serialize, Debug, Clone, Default)]
-#[serde(rename_all = "camelCase")]
-pub struct Authorship {
-    pub value: String,
-    pub basionym_authorship: Option<AuthGroup>,
-    pub combination_authorship: Option<AuthGroup>,
+impl NameAuthors for Uninomial {
+    fn last_authorship(&self) -> Option<(String, Option<String>)> {
+        match &self.authorship {
+            None => None,
+            Some(au) => Some((au.value.clone(), au.year.clone())),
+        }
+    }
 }
 
 #[derive(Serialize, Debug, Clone, Default)]
 #[serde(rename_all = "camelCase")]
-pub struct AuthGroup {
+pub struct Authorship {
+    pub value: String,
+    #[serde(skip_serializing)]
+    pub year: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub basionym_authorship: Option<AuthorsGroup>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub combination_authorship: Option<AuthorsGroup>,
+}
+
+#[derive(Serialize, Debug, Clone, Default)]
+#[serde(rename_all = "camelCase")]
+pub struct AuthorsGroup {
     pub authors: Vec<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub year: Option<Year>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub ex_authors: Option<Authors>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub emend_authors: Option<Authors>,
 }
 
@@ -81,6 +103,11 @@ pub struct Authors {
 
 #[derive(Serialize, Debug, Clone, Default)]
 pub struct Year {
-    pub year: String,
+    pub value: String,
+    #[serde(skip_serializing_if = "is_false")]
     pub approximate: bool,
+}
+
+fn is_false(b: &bool) -> bool {
+    !*b
 }
