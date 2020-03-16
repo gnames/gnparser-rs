@@ -85,6 +85,7 @@ lazy_static! {
     .iter()
     .cloned()
     .collect();
+    static ref AU_CHARS: HashMap<char, char> = [('‘', '\''), ('’', '\'')].iter().cloned().collect();
 }
 
 pub fn normalize(w: &str) -> (String, Vec<Warning>) {
@@ -94,6 +95,20 @@ pub fn normalize(w: &str) -> (String, Vec<Warning>) {
         if let Some(subst) = TR_CHARS.get(&c) {
             wrns.push(Warn::CharBadWarn.as_warning());
             res.push_str(subst);
+        } else {
+            res.push(c);
+        }
+    }
+    (res.to_string(), wrns)
+}
+
+pub fn normalize_auth(aw: &str) -> (String, Vec<Warning>) {
+    let mut res = String::new();
+    let mut wrns: Vec<Warning> = Vec::new();
+    for c in aw.chars() {
+        if let Some(subst) = AU_CHARS.get(&c) {
+            wrns.push(Warn::ApostrOtherWarn.as_warning());
+            res.push(*subst);
         } else {
             res.push(c);
         }

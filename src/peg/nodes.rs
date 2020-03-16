@@ -31,6 +31,7 @@ impl ParseProcessor {
     }
 
     pub fn ast_sci_name(&mut self, sci_name: Pair<Rule>, verbatim: &str, is_test: bool) -> SciName {
+        println!("{:#?}", sci_name);
         for pair in sci_name.into_inner() {
             match pair.as_rule() {
                 Rule::SingleName => {
@@ -157,11 +158,15 @@ impl ParseProcessor {
     }
 
     fn author_words(&mut self, aws: Pair<Rule>, mut ag: AuthorsGroup) -> AuthorsGroup {
-        let mut wrd: Vec<&str> = Vec::new();
+        let mut wrd: Vec<String> = Vec::new();
         for pair in aws.into_inner() {
             match pair.as_rule() {
                 Rule::AuthorWord => {
-                    wrd.push(pair.as_str());
+                    let (aw, warns) = norm::normalize_auth(pair.as_str());
+                    wrd.push(aw);
+                    if warns.len() > 0 {
+                        self.sn.quality_warnings.extend_from_slice(&warns);
+                    }
                     let sp = pair.as_span();
                     let pos = Pos(WordType::AuthorWordType.to_string(), sp.start(), sp.end());
                     self.pos.push(pos);

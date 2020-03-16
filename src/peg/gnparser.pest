@@ -31,23 +31,36 @@ NameUpperChar = _{ UpperChar | UpperCharExtended }
 
 NameLowerChar = _{ LowerChar | LowerCharExtended | MiscodedChar }
 
-Dash = _{ "-" }
-
-Authorship = { (AuthorshipCombo | OriginalAuthorship) ~ &(SpaceCharEOI | ";" | ",") }
+Authorship = { (AuthorshipCombo | OriginalAuthorship) ~
+               &(SpaceCharEOI | ";" | ",") }
 
 AuthorshipCombo = { OriginalAuthorshipComb ~ (Sp? ~ CombinationAuthorship)? }
 
 OriginalAuthorship = { AuthorsGroup }
 
-OriginalAuthorshipComb = { BasyonymAuthorship }
+OriginalAuthorshipComb = { BasionymAuthorshipYearMisformed |
+                           BasionymAuthorship |
+                           BasionymAuthorshipMissingParens }
 
 CombinationAuthorship = { AuthorsGroup }
 
-BasyonymAuthorship = { BasyonymAuthorship1 }
+BasionymAuthorshipMissingParens = { MissingParensStart | MissingParensEnd }
 
-BasyonymAuthorship1 = _{ "(" ~ Sp? ~ AuthorsGroup ~ Sp? ~ ")" }
+MissingParensStart = _{ "(" ~ Sp? ~ AuthorsGroup }
 
-AuthorsGroup = { AuthorsTeam }
+MissingParensEnd = _{ AuthorsGroup ~ Sp? ~ ")" }
+
+BasionymAuthorshipYearMisformed = _{ "(" ~ Sp? ~ AuthorsGroup ~ Sp? ~
+                                     ")" ~ (Sp? ~ ",")? ~ Sp? ~ Year }
+
+BasionymAuthorship = { BasionymAuthorship1 | BasionymAuthorship2Parens }
+
+BasionymAuthorship1 = _{ "(" ~ Sp? ~ AuthorsGroup ~ Sp? ~ ")" }
+
+BasionymAuthorship2Parens = _{ "(" ~ Sp? ~ "(" ~ Sp? ~ AuthorsGroup ~
+                              Sp? ~ ")" ~ Sp? ~ ")" }
+
+AuthorsGroup = { AuthorsTeam ~ (Sp ~ (AuthorEmend | AuthorEx) ~ AuthorsTeam)? }
 
 AuthorsTeam = { Author ~ (AuthorSep ~ Author)* ~ (Sp? ~ ","? ~ Sp? ~ Year)? }
 
@@ -57,13 +70,48 @@ AuthorSep1 = _{ Sp? ~ ("," ~ Sp)? ~ ( "&" | "et" | "and" | "apud") ~ Sp? }
 
 AuthorSep2 = _{ Sp? ~ "," ~ Sp? }
 
-Author = { Author2 }
+AuthorEx = _{ ("ex" ~ "."? | "in") ~ Sp }
+
+AuthorEmend = _{ "emend" ~ "."? ~ Sp }
+
+Author = { Author1 | Author2 | UnknownAuthor }
+
+Author1 = _{ Author2 ~ Sp? ~ (Filius | AuthorSuffix) }
 
 Author2 = _{ AuthorWord ~ (Sp? ~ AuthorWord)* }
 
-AuthorWord = { CapAuthorWord ~ "."? }
+UnknownAuthor = _{ "?" | (("auct" | "anon") ~ (&(SpaceCharEOI) | ".")) }
+
+AuthorWord = { !("bold:") ~ (AuthorEtAl | AuthorWord2 | AuthorWord3 |
+               AuthorPrefix) }
+
+AuthorEtAl = _{ "arg." | "et al." | ("et" | "&") ~ " al" ~ "."? }
+
+AuthorWord2 = _{ AuthorWord3 ~ Dash ~ AuthorWordSoft }
+
+AuthorWord3 = _{ AuthorPrefixGlued? ~ (AllCapsAuthorWord | CapAuthorWord) ~ "."? }
+
+AuthorWordSoft = _{ ((AuthorUpperChar ~ (AuthorUpperChar+ | AuthorLowerChar+)) |
+  AuthorLowerChar+) ~ "."? }
 
 CapAuthorWord = _{ AuthorUpperChar ~ AuthorLowerChar* }
+
+AllCapsAuthorWord = _{ AuthorUpperChar ~ AuthorUpperChar+ }
+
+Filius = { "f." | "fil." | "filius" }
+
+AuthorSuffix = _{ "bis" }
+
+AuthorPrefixGlued = _{ ("d" | "O" | "L" | "Mc" | "M") ~ Apostrophe }
+
+AuthorPrefix = _{ AuthorPrefix1 | AuthorPrefix2 }
+
+AuthorPrefix1 = _{ ("ab" | "af" | "bis" | "da" | "der" | "des" |
+  "den" | "del" | "della" | "dela" | "de" | "di" | "du" | "el" | "la" |
+  "le" | "ter" | "van" | "d" ~ Apostrophe | "in" ~ Apostrophe ~ "t" |
+  "zur" | ("von" ~ (Sp ~ ("d."| "dem"))?) | ("v" ~ (Sp ~ "d")?)) ~ &Sp }
+
+AuthorPrefix2 = _{ ("v." ~ (Sp? ~ "d.")?) | Apostrophe ~ "t" }
 
 AuthorUpperChar = _{UpperChar | MiscodedChar |
   ("À" | "Á" | "Â" | "Ã" | "Ä" | "Å" |"Æ" |"Ç" |"È" |"É" |"Ê" |"Ë" |"Ì" |"Í" |"Î" |"Ï" |"Ð" |"Ñ" |"Ò" |"Ó" |"Ô" |"Õ" |"Ö" |"Ø" |"Ù" |"Ú" |"Û" |"Ü" |"Ý" |"Ć" |"Č" |"Ď" |"İ" |"Ķ" |"Ĺ" |"ĺ" |"Ľ" |"ľ" |"Ł" |"ł" |"Ņ" |"Ō" |"Ő" |"Œ" |"Ř" |"Ś" |"Ŝ" |"Ş" |"Š" |"Ÿ" |"Ź" |"Ż" |"Ž" |"ƒ" |"Ǿ" |"Ș" |"Ț") }
@@ -94,6 +142,14 @@ YearWithParens = { "(" ~ (YearWithChar | YearNum) ~ ")" }
 YearWithChar = { YearNum ~ LowerChar }
 
 YearNum = { ("1" | "2") ~ ("0" | "7" | "8" | "9") ~ ASCII_DIGIT ~ (ASCII_DIGIT | "?") ~ "?"* }
+
+Apostrophe = _{ ApostrOther | ApostrASCII }
+
+ApostrASCII = _{ "'" }
+
+ApostrOther = _{ "‘" | "’" }
+
+Dash = _{ "-" }
 
 MiscodedChar = _{ "�" }
 
