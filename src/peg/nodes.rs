@@ -31,7 +31,6 @@ impl ParseProcessor {
     }
 
     pub fn ast_sci_name(&mut self, sci_name: Pair<Rule>, verbatim: &str, is_test: bool) -> SciName {
-        println!("{:#?}", sci_name);
         for pair in sci_name.into_inner() {
             match pair.as_rule() {
                 Rule::SingleName => {

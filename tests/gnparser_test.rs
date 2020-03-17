@@ -1,7 +1,8 @@
 use gnparser::peg::ParseEngine;
 use gnparser::{Format, GNParser};
 use std::fs;
-use std::io::{self, BufRead};
+use std::io::{self, BufRead, Write};
+use std::path;
 
 #[test]
 fn gnparser_collects_test_data() {
@@ -51,7 +52,7 @@ fn read_test_data() -> Vec<TestData> {
             item.push(txt1);
             if item.len() == 4 {
                 let csv = item.pop().unwrap().to_string();
-                let json = item.pop().unwrap().to_string();
+                let json = item.pop().unwrap().to_string().replace("\\u0026", "&");
                 let raw = item.pop().unwrap().to_string();
                 let verbatim = item.pop().unwrap().to_string();
                 let td = TestData {
@@ -64,5 +65,25 @@ fn read_test_data() -> Vec<TestData> {
             }
         }
     }
+    make_200k(&res);
     res
+}
+
+fn make_200k(td: &Vec<TestData>) {
+    let dir = path::Path::new("testdata/200k.txt");
+    if path::Path::new(dir).exists() {
+        return;
+    } else {
+        let mut f = fs::File::create(dir).expect("create file");
+        let mut count = 0;
+        loop {
+            for l in td {
+                count += 1;
+                writeln!(f, "{}", l.verbatim).unwrap();
+            }
+            if count > 200_000 {
+                break;
+            }
+        }
+    }
 }
