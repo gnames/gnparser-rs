@@ -197,7 +197,9 @@ impl ParseProcessor {
         };
         for pair in au.into_inner() {
             match pair.as_rule() {
-                Rule::AuthorshipCombo => {}
+                Rule::AuthorshipCombo => {
+                    println!("{:?}", rules(pair));
+                }
                 Rule::OriginalAuthorship => {
                     let ag = pair.into_inner().next().unwrap();
                     authorship.basionym_authorship = Some(self.new_auth_group(ag));
@@ -315,6 +317,24 @@ impl ParseProcessor {
                 Ordering::Equal => (&a.1).cmp(&b.1),
                 other => other,
             });
+    }
+}
+
+fn rules(pair: Pair<Rule>) {
+    let rule = pair.as_rule();
+    let mut pairs = pair.clone().into_inner().peekable();
+
+    if pairs.peek().is_none() {
+        print!("{:?})", rule)
+    } else {
+        print!(
+            "{:?}([{}])",
+            rule,
+            pairs
+                .map(|pair| format!("{}", pair))
+                .collect::<Vec<_>>()
+                .join(", ")
+        )
     }
 }
 
