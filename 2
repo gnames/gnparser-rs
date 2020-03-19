@@ -76,24 +76,17 @@ pub struct Uninomial {
 
 impl Uninomial {
     fn canonical(&self) -> Canonical {
-        match &self.parent {
-            Some(prnt) => {
-                let mut rank = "".to_string();
-                if let Some(rnk) = &self.rank {
-                    rank = rnk.clone();
-                }
-                Canonical {
-                    full: format!("{} {} {}", prnt, rank, self.value),
-                    simple: self.value.clone(),
-                    stem: self.value.clone(),
+        match self.parent {
+            Some(parent) => {
+                Canonical{
+                    ..Default::default()
                 }
             }
-            _ => Canonical {
-                full: self.value.clone(),
-                simple: self.value.clone(),
-                stem: self.value.clone(),
-            },
-        }
+            None => Canonical {
+            full: self.value.clone(),
+            simple: self.value.clone(),
+            stem: self.value.clone(),
+        },
     }
 }
 

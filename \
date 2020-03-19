@@ -108,7 +108,7 @@ impl ParseProcessor {
         uninomial
     }
 
-    fn new_uninomial_combo(&mut self, uni: Pair<Rule>) -> Uninomial {
+    fn new_uninomial_combo(&self, uni: Pair<Rule>) -> Uninomial {
         let mut uninomial = Uninomial {
             ..Default::default()
         };
@@ -154,17 +154,14 @@ impl ParseProcessor {
         let mut pairs = pair.into_inner();
 
         let prt_pair = pairs.next().unwrap();
-        let mut uni_pairs = prt_pair.into_inner();
-        let uwrd_pair = uni_pairs.next().unwrap();
-        // if let Some(au_pair) = uni_pairs.next() {
-        //     self.new_authorship(au_pair);
-        // }
+        let uwrd_pair = prt_pair.into_inner().next().unwrap();
+
         let rank_pair = pairs.next().unwrap();
         let uni_pair = pairs.next().unwrap();
 
         let parent = self.uninomial_parent(uwrd_pair);
         let rank = self.uninomial_rank(rank_pair);
-        let mut uninomial = self.new_uninomial(uni_pair);
+        let uninomial = self.new_uninomial(uni_pair);
         uninomial.rank = rank;
         uninomial.parent = parent;
         uninomial

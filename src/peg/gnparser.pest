@@ -6,7 +6,24 @@ Tail = { ((Sp | ";" | ",") ~ ANY*)? }
 
 SingleName = { NameUninomial }
 
-NameUninomial = _{ Uninomial }
+NameUninomial = _{ UninomialCombo | Uninomial }
+
+SubGenusOrSuperspecies = _{ "(" ~ Sp? ~ NameLowerChar+ ~ Sp? ~ ")" }
+
+SubGenus = { "(" ~ Sp? ~ UninomialWord ~ Sp? ~ ")" }
+
+UninomialCombo = { UninomialCombo1 | UninomialCombo2 }
+UninomialCombo1 = { UninomialWord ~ Sp? ~ SubGenus ~ (Sp? ~ Authorship)? }
+UninomialCombo2 = { Uninomial ~ Sp ~ RankUninomial ~ Sp ~ Uninomial }
+
+RankUninomial = { RankUninomialPlain | RankUninomialNotho }
+
+RankUninomialPlain = _{ ("sect" | "subsect" | "trib" | "subtrib" | "subser" |
+  "ser" | "subgen" | "subg" | "fam" | "subfam" |
+  "supertrib") ~ ("." | &(SpaceCharEOI)) }
+
+RankUninomialNotho = _{ ("notho" ~ Sp? ~ ("sect" | "gen" | "ser" | "subgeen" |
+  "subgen" | "subg" | "subsect" | "subtrib")) ~ ("." | &(SpaceCharEOI)) }
 
 Uninomial = { UninomialWord ~ (Sp ~ Authorship)? }
 

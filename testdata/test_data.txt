@@ -210,8 +210,6 @@ Ba Solem 1983
 452f1a8e-711a-5b9c-906c-f475015229dd,Ba Solem 1983,Ba,Ba,Ba,Solem 1983,1983,1
 #>
 
-__END__
-
 #SECTION: Combination of two uninomials<
 Poaceae subtrib. Scolochloinae Soreng
 Poaceae subtrib. Scolochloinae Soreng
@@ -225,13 +223,15 @@ c60c1ff6-8e9d-5817-b49c-5845a5eaa9f5,Zygophyllaceae subfam. Tribuloideae D.M.Por
 
 Cordia (Adans.) Kuntze sect. Salimori
 Cordia (Adans.) Kuntze sect. Salimori
-{"parsed":true,"quality":2,"qualityWarnings":[[2,"Combination of two uninomials"]],"verbatim":"Cordia (Adans.) Kuntze sect. Salimori","normalized":"Cordia sect. Salimori","canonicalName":{"full":"Cordia sect. Salimori","simple":"Salimori","stem":"Salimori"},"details":[{"uninomial":{"value":"Salimori","rank":"sect.","parent":"Cordia"}}],"positions":[["uninomial",0,6],["authorWord",8,14],["authorWord",16,22],["rank",23,28],["uninomial",29,37]],"surrogate":false,"virus":false,"hybrid":false,"bacteria":false,"nameStringId":"48d5dbbe-50ff-50ae-a1f8-1cf4b3e2144b","parserVersion":"test_version"}
+{"parsed":true,"quality":2,"qualityWarnings":[[2,"Combination of two uninomials"]],"verbatim":"Cordia (Adans.) Kuntze sect. Salimori","normalized":"Cordia sect. Salimori","canonicalName":{"full":"Cordia sect. Salimori","simple":"Salimori","stem":"Salimori"},"details":[{"uninomial":{"value":"Salimori","rank":"sect.","parent":"Cordia"}}],"positions":[["uninomial",0,6],["rank",23,28],["uninomial",29,37]],"surrogate":false,"virus":false,"hybrid":false,"bacteria":false,"nameStringId":"48d5dbbe-50ff-50ae-a1f8-1cf4b3e2144b","parserVersion":"test_version"}
 48d5dbbe-50ff-50ae-a1f8-1cf4b3e2144b,Cordia (Adans.) Kuntze sect. Salimori,Cordia sect. Salimori,Salimori,Salimori,,,2
 
 Cordia sect. Salimori (Adans.) Kuntz
 Cordia sect. Salimori (Adans.) Kuntz
 {"parsed":true,"quality":2,"qualityWarnings":[[2,"Combination of two uninomials"]],"verbatim":"Cordia sect. Salimori (Adans.) Kuntz","normalized":"Cordia sect. Salimori (Adans.) Kuntz","canonicalName":{"full":"Cordia sect. Salimori","simple":"Salimori","stem":"Salimori"},"authorship":"(Adans.) Kuntz","details":[{"uninomial":{"value":"Salimori","rank":"sect.","parent":"Cordia","authorship":{"value":"(Adans.) Kuntz","basionymAuthorship":{"authors":["Adans."]},"combinationAuthorship":{"authors":["Kuntz"]}}}}],"positions":[["uninomial",0,6],["rank",7,12],["uninomial",13,21],["authorWord",23,29],["authorWord",31,36]],"surrogate":false,"virus":false,"hybrid":false,"bacteria":false,"nameStringId":"337ef30d-f5da-5194-8bca-5354b262a05c","parserVersion":"test_version"}
 337ef30d-f5da-5194-8bca-5354b262a05c,Cordia sect. Salimori (Adans.) Kuntz,Cordia sect. Salimori,Salimori,Salimori,(Adans.) Kuntz,,2
+
+__END__
 
 Poaceae supertrib. Arundinarodae L.Liu
 Poaceae supertrib. Arundinarodae L.Liu
