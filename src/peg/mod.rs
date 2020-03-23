@@ -2,6 +2,7 @@ mod engine;
 mod nodes;
 mod norm;
 mod sci_name;
+mod valid_rules;
 mod warnings;
 mod word_type;
 

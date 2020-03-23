@@ -6,6 +6,7 @@ use super::Warn;
 use lazy_static;
 use pest::iterators::Pair;
 use std::cmp::Ordering;
+use std::iter::Iterator;
 use uuid::Uuid;
 
 lazy_static! {
@@ -28,7 +29,9 @@ impl ParseProcessor {
     }
 
     pub fn ast_sci_name(&mut self, sci_name: Pair<Rule>, verbatim: &str, is_test: bool) -> SciName {
-        for pair in sci_name.into_inner() {
+        let fp: Vec<Pair<Rule>> = sci_name.clone().into_inner().flatten().collect();
+        println!("{:#?}", fp);
+        for pair in sci_name.into_inner().filter(|r| r.as_rule() != Rule::Tail) {
             match pair.as_rule() {
                 Rule::SingleName => {
                     let det = pair.into_inner().next().unwrap();

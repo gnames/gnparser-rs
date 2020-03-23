@@ -1,14 +1,14 @@
 SciName = { SOI ~ Name ~ Tail ~ EOI }
 
-Name = _{ SingleName }
+Name = { SingleName }
 
 Tail = { ((Sp | ";" | ",") ~ ANY*)? }
 
 SingleName = { NameUninomial }
 
-NameUninomial = _{ UninomialCombo | Uninomial }
+NameUninomial = { UninomialCombo | Uninomial }
 
-SubGenusOrSuperspecies = _{ "(" ~ Sp? ~ NameLowerChar+ ~ Sp? ~ ")" }
+SubGenusOrSuperspecies = { "(" ~ Sp? ~ NameLowerChar+ ~ Sp? ~ ")" }
 
 SubGenus = { "(" ~ Sp? ~ UninomialWord ~ Sp? ~ ")" }
 
@@ -18,35 +18,35 @@ UninomialCombo2 = { Uninomial ~ Sp ~ RankUninomial ~ Sp ~ Uninomial }
 
 RankUninomial = { RankUninomialPlain | RankUninomialNotho }
 
-RankUninomialPlain = _{ ("sect" | "subsect" | "trib" | "subtrib" | "subser" |
+RankUninomialPlain = { ("sect" | "subsect" | "trib" | "subtrib" | "subser" |
   "ser" | "subgen" | "subg" | "fam" | "subfam" |
   "supertrib") ~ ("." | &(SpaceCharEOI)) }
 
-RankUninomialNotho = _{ ("notho" ~ Sp? ~ ("sect" | "gen" | "ser" | "subgeen" |
+RankUninomialNotho = { ("notho" ~ Sp? ~ ("sect" | "gen" | "ser" | "subgeen" |
   "subgen" | "subg" | "subsect" | "subtrib")) ~ ("." | &(SpaceCharEOI)) }
 
 Uninomial = { UninomialWord ~ (Sp ~ Authorship)? }
 
 UninomialWord = { CapWord | TwoLetterGenus }
 
-CapWord = _{ CapWordWithDash | CapWord1 }
+CapWord = { CapWordWithDash | CapWord1 }
 
-CapWordWithDash = _{ CapWord1 ~ Dash ~ ( UpperAfterDash | LowerAfterDash) }
+CapWordWithDash = { CapWord1 ~ Dash ~ ( UpperAfterDash | LowerAfterDash) }
 
-UpperAfterDash = _{ CapWord1 }
+UpperAfterDash = { CapWord1 }
 
-LowerAfterDash = _{ Word1 }
+LowerAfterDash = { Word1 }
 
-TwoLetterGenus = _{ "Ca" | "Ea" | "Ge" | "Ia" | "Io" | "Ix" | "Lo" | "Oa" |
+TwoLetterGenus = { "Ca" | "Ea" | "Ge" | "Ia" | "Io" | "Ix" | "Lo" | "Oa" |
   "Ra" | "Ty" | "Ua" | "Aa" | "Ja" | "Zu" | "La" | "Qu" | "As" | "Ba" }
 
-Word1 = _{ (ASCII_ALPHA_LOWER ~ Dash)? ~ NameLowerChar ~ NameLowerChar+ }
+Word1 = { (ASCII_ALPHA_LOWER ~ Dash)? ~ NameLowerChar ~ NameLowerChar+ }
 
-CapWord1 = _{ NameUpperChar ~ NameLowerChar ~ NameLowerChar+ ~ "?"? }
+CapWord1 = { NameUpperChar ~ NameLowerChar ~ NameLowerChar+ ~ "?"? }
 
-NameUpperChar = _{ UpperChar | UpperCharExtended }
+NameUpperChar = { UpperChar | UpperCharExtended }
 
-NameLowerChar = _{ LowerChar | LowerCharExtended | MiscodedChar }
+NameLowerChar = { LowerChar | LowerCharExtended | MiscodedChar }
 
 Authorship = { (AuthorshipCombo | OriginalAuthorship) ~
                &(SpaceCharEOI | ";" | ",") }
@@ -63,81 +63,81 @@ CombinationAuthorship = { AuthorsGroup }
 
 BasionymAuthorshipMissingParens = { MissingParensStart | MissingParensEnd }
 
-MissingParensStart = _{ "(" ~ Sp? ~ AuthorsGroup }
+MissingParensStart = { "(" ~ Sp? ~ AuthorsGroup }
 
-MissingParensEnd = _{ AuthorsGroup ~ Sp? ~ ")" }
+MissingParensEnd = { AuthorsGroup ~ Sp? ~ ")" }
 
-BasionymAuthorshipYearMisformed = _{ "(" ~ Sp? ~ AuthorsGroup ~ Sp? ~
+BasionymAuthorshipYearMisformed = { "(" ~ Sp? ~ AuthorsGroup ~ Sp? ~
                                      ")" ~ (Sp? ~ ",")? ~ Sp? ~ Year }
 
 BasionymAuthorship = { BasionymAuthorship1 | BasionymAuthorship2Parens }
 
-BasionymAuthorship1 = _{ "(" ~ Sp? ~ AuthorsGroup ~ Sp? ~ ")" }
+BasionymAuthorship1 = { "(" ~ Sp? ~ AuthorsGroup ~ Sp? ~ ")" }
 
-BasionymAuthorship2Parens = _{ "(" ~ Sp? ~ "(" ~ Sp? ~ AuthorsGroup ~
+BasionymAuthorship2Parens = { "(" ~ Sp? ~ "(" ~ Sp? ~ AuthorsGroup ~
                               Sp? ~ ")" ~ Sp? ~ ")" }
 
 AuthorsGroup = { AuthorsTeam ~ (Sp ~ (AuthorEmend | AuthorEx) ~ AuthorsTeam)? }
 
 AuthorsTeam = { Author ~ (AuthorSep ~ Author)* ~ (Sp? ~ ","? ~ Sp? ~ Year)? }
 
-AuthorSep = _{ AuthorSep1 | AuthorSep2 }
+AuthorSep = { AuthorSep1 | AuthorSep2 }
 
-AuthorSep1 = _{ Sp? ~ ("," ~ Sp)? ~ ( "&" | "et" | "and" | "apud") ~ Sp? }
+AuthorSep1 = { Sp? ~ ("," ~ Sp)? ~ ( "&" | "et" | "and" | "apud") ~ Sp? }
 
-AuthorSep2 = _{ Sp? ~ "," ~ Sp? }
+AuthorSep2 = { Sp? ~ "," ~ Sp? }
 
-AuthorEx = _{ ("ex" ~ "."? | "in") ~ Sp }
+AuthorEx = { ("ex" ~ "."? | "in") ~ Sp }
 
-AuthorEmend = _{ "emend" ~ "."? ~ Sp }
+AuthorEmend = { "emend" ~ "."? ~ Sp }
 
 Author = { Author1 | Author2 | UnknownAuthor }
 
-Author1 = _{ Author2 ~ Sp? ~ (Filius | AuthorSuffix) }
+Author1 = { Author2 ~ Sp? ~ (Filius | AuthorSuffix) }
 
-Author2 = _{ AuthorWord ~ (Sp? ~ AuthorWord)* }
+Author2 = { AuthorWord ~ (Sp? ~ AuthorWord)* }
 
-UnknownAuthor = _{ "?" | (("auct" | "anon") ~ (&(SpaceCharEOI) | ".")) }
+UnknownAuthor = { "?" | (("auct" | "anon") ~ (&(SpaceCharEOI) | ".")) }
 
 AuthorWord = { !("bold:") ~ (AuthorEtAl | AuthorWord2 | AuthorWord3 |
                AuthorPrefix) }
 
-AuthorEtAl = _{ "arg." | "et al." | ("et" | "&") ~ " al" ~ "."? }
+AuthorEtAl = { "arg." | "et al." | ("et" | "&") ~ " al" ~ "."? }
 
-AuthorWord2 = _{ AuthorWord3 ~ Dash ~ AuthorWordSoft }
+AuthorWord2 = { AuthorWord3 ~ Dash ~ AuthorWordSoft }
 
-AuthorWord3 = _{ AuthorPrefixGlued? ~ (AllCapsAuthorWord | CapAuthorWord) ~ "."? }
+AuthorWord3 = { AuthorPrefixGlued? ~ (AllCapsAuthorWord | CapAuthorWord) ~ "."? }
 
-AuthorWordSoft = _{ ((AuthorUpperChar ~ (AuthorUpperChar+ | AuthorLowerChar+)) |
+AuthorWordSoft = { ((AuthorUpperChar ~ (AuthorUpperChar+ | AuthorLowerChar+)) |
   AuthorLowerChar+) ~ "."? }
 
-CapAuthorWord = _{ AuthorUpperChar ~ AuthorLowerChar* }
+CapAuthorWord = { AuthorUpperChar ~ AuthorLowerChar* }
 
-AllCapsAuthorWord = _{ AuthorUpperChar ~ AuthorUpperChar+ }
+AllCapsAuthorWord = { AuthorUpperChar ~ AuthorUpperChar+ }
 
 Filius = { "f." | "fil." | "filius" }
 
-AuthorSuffix = _{ "bis" }
+AuthorSuffix = { "bis" }
 
-AuthorPrefixGlued = _{ ("d" | "O" | "L" | "Mc" | "M") ~ Apostrophe }
+AuthorPrefixGlued = { ("d" | "O" | "L" | "Mc" | "M") ~ Apostrophe }
 
-AuthorPrefix = _{ AuthorPrefix1 | AuthorPrefix2 }
+AuthorPrefix = { AuthorPrefix1 | AuthorPrefix2 }
 
-AuthorPrefix1 = _{ ("ab" | "af" | "bis" | "da" | "der" | "des" |
+AuthorPrefix1 = { ("ab" | "af" | "bis" | "da" | "der" | "des" |
   "den" | "del" | "della" | "dela" | "de" | "di" | "du" | "el" | "la" |
   "le" | "ter" | "van" | "d" ~ Apostrophe | "in" ~ Apostrophe ~ "t" |
   "zur" | ("von" ~ (Sp ~ ("d."| "dem"))?) | ("v" ~ (Sp ~ "d")?)) ~ &Sp }
 
-AuthorPrefix2 = _{ ("v." ~ (Sp? ~ "d.")?) | Apostrophe ~ "t" }
+AuthorPrefix2 = { ("v." ~ (Sp? ~ "d.")?) | Apostrophe ~ "t" }
 
-AuthorUpperChar = _{UpperChar | MiscodedChar |
+AuthorUpperChar = {UpperChar | MiscodedChar |
   ("À" | "Á" | "Â" | "Ã" | "Ä" | "Å" |"Æ" |"Ç" |"È" |"É" |"Ê" |"Ë" |"Ì" |
    "Í" |"Î" |"Ï" |"Ð" |"Ñ" |"Ò" |"Ó" |"Ô" |"Õ" |"Ö" |"Ø" |"Ù" |"Ú" |"Û" |
    "Ü" |"Ý" |"Ć" |"Č" |"Ď" |"İ" |"Ķ" |"Ĺ" |"ĺ" |"Ľ" |"ľ" |"Ł" |"ł" |"Ņ" |
    "Ō" |"Ő" |"Œ" |"Ř" |"Ś" |"Ŝ" |"Ş" |"Š" |"Ÿ" |"Ź" |"Ż" |"Ž" |"ƒ" |"Ǿ" |
    "Ș" |"Ț") }
 
-AuthorLowerChar = _{LowerChar | MiscodedChar |
+AuthorLowerChar = {LowerChar | MiscodedChar |
   ("à" |"á" |"â" |"ã" |"ä" |"å" |"æ" |"ç" |"è" |"é" |"ê" |"ë" |"ì" |"í" |
    "î" |"ï" |"ð" |"ñ" |"ò" |"ó" |"ó" |"ô" |"õ" |"ö" |"ø" |"ù" |"ú" |"û" |
    "ü" |"ý" |"ÿ" |"ā" |"ă" |"ą" |"ć" |"ĉ" |"č" |"ď" |"đ" |"'" |"ē" |"ĕ" |
@@ -164,33 +164,33 @@ YearWithChar = { YearNum ~ LowerChar }
 
 YearNum = { ("1" | "2") ~ ("0" | "7" | "8" | "9") ~ ASCII_DIGIT ~ (ASCII_DIGIT | "?") ~ "?"* }
 
-Apostrophe = _{ ApostrOther | ApostrASCII }
+Apostrophe = { ApostrOther | ApostrASCII }
 
-ApostrASCII = _{ "'" }
+ApostrASCII = { "'" }
 
-ApostrOther = _{ "‘" | "’" }
+ApostrOther = { "‘" | "’" }
 
-Dash = _{ "-" }
+Dash = { "-" }
 
-MiscodedChar = _{ "�" }
+MiscodedChar = { "�" }
 
-UpperCharExtended = _{ "Æ" | "Œ" | "Ö" }
+UpperCharExtended = { "Æ" | "Œ" | "Ö" }
 
-UpperChar = _{ ASCII_ALPHA_UPPER }
+UpperChar = { ASCII_ALPHA_UPPER }
 
-LowerCharExtended = _{ "æ" | "œ" | "à" | "â" | "å" | "ã" | "ä" | "á" | "ç" |
+LowerCharExtended = { "æ" | "œ" | "à" | "â" | "å" | "ã" | "ä" | "á" | "ç" |
                          "č" | "é" | "è" | "ë" | "í" | "ì" | "ï" | "ň" | "ñ" |
                          "ñ" | "ó" | "ò" | "ô" | "ø" | "õ" | "ö" | "ú" | "ù" |
                          "ü" | "ŕ" | "ř" | "ŗ" | "ſ" | "š" | "š" | "ş" | "ž" }
 
-LowerChar = _{ ASCII_ALPHA_LOWER }
+LowerChar = { ASCII_ALPHA_LOWER }
 
-SpaceCharEOI = _{ Sp | EOI }
+SpaceCharEOI = { Sp | EOI }
 
-Sp = _{ MultipleSpace | SingleSpace }
+Sp = { MultipleSpace | SingleSpace }
 
-MultipleSpace = _{ SingleSpace ~ SingleSpace+ }
+MultipleSpace = { SingleSpace ~ SingleSpace+ }
 
-SingleSpace = _{ " " | OtherSpace }
+SingleSpace = { " " | OtherSpace }
 
-OtherSpace = _{ "　" | " " | "\t" | "\r" | "\n" } //| "\f" | "\v" }
+OtherSpace = { "　" | " " | "\t" | "\r" | "\n" } //| "\f" | "\v" }
