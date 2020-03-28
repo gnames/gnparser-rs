@@ -1,4 +1,24 @@
-use pest::iterators::Pair;
+ffn print_ast(pair: &pest::iterators::Pair<'_, Rule>, indent: usize) {
+    let inner_pairs = pair.clone().into_inner();
+    if inner_pairs.clone().count() > 0 {
+        println!("{:indent$}{:#?}", "", pair.as_rule(), indent = indent);
+        for inner_pair in inner_pairs {
+            print_ast(&inner_pair, indent + 2);
+        }
+    }else{
+        println!("{:indent$}{:#?}: {}", "", pair.as_rule(), pair.as_span().as_str(), indent = indent);
+    }
+}n print_ast(pair: &pest::iterators::Pair<'_, Rule>, indent: usize) {
+    let inner_pairs = pair.clone().into_inner();
+    if inner_pairs.clone().count() > 0 {
+        println!("{:indent$}{:#?}", "", pair.as_rule(), indent = indent);
+        for inner_pair in inner_pairs {
+            print_ast(&inner_pair, indent + 2);
+        }
+    }else{
+        println!("{:indent$}{:#?}: {}", "", pair.as_rule(), pair.as_span().as_str(), indent = indent);
+    }
+}use pest::iterators::Pair;
 use pest::Parser;
 
 #[derive(Parser)]

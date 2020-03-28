@@ -2,7 +2,7 @@ use super::Rule;
 use std::collections::HashSet;
 
 lazy_static! {
-    static ref VALID_RULES: HashSet<Rule> = vec![
+    pub static ref VALID_RULES: HashSet<Rule> = vec![
         Rule::SciName,
         Rule::Name,
         Rule::Tail,
@@ -67,6 +67,21 @@ lazy_static! {
         Rule::LowerCharExtended,
         Rule::ApostrOther,
         Rule::AuthorSuffix,
+    ]
+    .into_iter()
+    .collect();
+
+    pub static ref WARN_RULES: HashSet<Rule> = vec![
+        //Rule::HybridChar,
+        //Rule::RankNotho,
+        Rule::RankUninomialNotho,
+        Rule::OtherSpace,
+        // Rule::SpaceMultiple,
+        Rule::MiscodedChar,
+        Rule::BasionymAuthorship2Parens,
+        Rule::BasionymAuthorshipMissingParens,
+        // Rule::GenusUpperCharAfterDash,
+        //Rule::GreekLeterInRank,
     ]
     .into_iter()
     .collect();
